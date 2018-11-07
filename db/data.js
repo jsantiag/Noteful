@@ -86,7 +86,6 @@ const folders = [
     '_id': '111111111111111111111103',
     'name': 'Work',
     'userId':'333333333333333333333301'
-
   }
 ];
 
@@ -117,14 +116,6 @@ const tags = [
 ];
 
 const users = [
-  {
-    '_id': '333333333333333333333300',
-    'fullname': 'Bob User',
-    'username': 'bobuser',
-    // hash digest for the string 'password'
-    'password': '$2a$10$bjSX4UJ1N5/FzTJUMigrN.E/yjJAQ99EbSpx97g3dIxGk1PXfFaBG'
-  },
-  //screamers
   {
     '_id': '333333333333333333333301',
     'fullname': 'Babe User',

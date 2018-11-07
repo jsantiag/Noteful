@@ -73,7 +73,10 @@ router.post('/', (req, res, next) => {
 
   Tag.create(newTag)
     .then(result => {
-      res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
+      res
+        .location(`${req.originalUrl}/${result.id}`)
+        .status(201)
+        .json(result);
     })
     .catch(err => {
       if (err.code === 11000) {
@@ -88,6 +91,7 @@ router.post('/', (req, res, next) => {
 router.put('/:id', (req, res, next) => {
   const { id } = req.params;
   const { name } = req.body;
+  const userId = req.body.id; 
 
   /***** Never trust users - validate input *****/
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -104,7 +108,7 @@ router.put('/:id', (req, res, next) => {
 
   const updateTag = { name };
 
-  Tag.findByIdAndUpdate(id, updateTag, { new: true })
+  Tag.findByIdAndUpdate({_id:id, userId}, updateTag, { new: true })
     .then(result => {
       if (result) {
         res.json(result);
@@ -124,6 +128,7 @@ router.put('/:id', (req, res, next) => {
 /* ========== DELETE/REMOVE A SINGLE ITEM ========== */
 router.delete('/:id', (req, res, next) => {
   const { id } = req.params;
+  const userId = req.user.id; 
 
   /***** Never trust users - validate input *****/
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -132,7 +137,7 @@ router.delete('/:id', (req, res, next) => {
     return next(err);
   }
 
-  const tagRemovePromise = Tag.findByIdAndRemove(id);
+  const tagRemovePromise = Tag.findOneAndDelete({_id: id, userId});
 
   const noteUpdatePromise = Note.updateMany(
     { tags: id },
